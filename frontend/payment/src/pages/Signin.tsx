@@ -1,44 +1,26 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-// Simulating axios behavior for demo
-const mockAxios = {
-  post: async (url: string, data: any) => {
-    console.log('POST to:', url, 'with data:', data);
-    return {
-      data: {
-        token: 'mock-jwt-token',
-        user: { id: 1, username: data.username }
-      }
-    };
-  }
-};
-
-
-export default function Signin() {
+export function Signin() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      // Using axios as in original code
-      const response = await mockAxios.post('http://localhost:3000/api/v1/user/signin', {
+      const response = await axios.post('http://localhost:3000/api/v1/user/signin', {
         username,
         password
       });
       
-      // Clear any previous errors
-      setError('');
-      // In real app: localStorage.setItem('token', response.data.token);
-      // In real app: navigate('/dashboard');
-      console.log('Signin successful:', response.data);
-      alert('Signed in successfully!');
-    }  catch (err: unknown) {
-  const error = err as { response?: { data?: { message?: string } } };
-  console.error('Signin error:', error);
-  setError(error.response?.data?.message ?? 'Network error. Please try again.');
-}
-
+      localStorage.setItem('token', response.data.token);
+      navigate('/dashboard');
+    } catch (error: any) {
+      setError(error.response?.data?.message || 'Signin failed');
+    }
   };
 
   return (
@@ -51,7 +33,7 @@ export default function Signin() {
             <p className="text-gray-600">Enter your credentials to access your account.</p>
           </div>
 
-          <div className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
                 {error}
@@ -87,13 +69,12 @@ export default function Signin() {
             </div>
 
             <button
-              type="button"
-              onClick={handleSubmit}
+              type="submit"
               className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-medium transition-all duration-200 transform hover:scale-[1.02]"
             >
               Sign in
             </button>
-          </div>
+          </form>
 
           <div className="text-center mt-6">
             <a href="/signup" className="text-blue-600 hover:text-blue-500 underline transition-colors duration-200">
