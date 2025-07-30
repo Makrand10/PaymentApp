@@ -14,14 +14,15 @@ export function Signup() {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:3000/api/v1/user/signup', {
-        username: email,
+        username: email, // Using email as username
         password,
         firstName,
         lastName
       });
       
-      localStorage.setItem('token', response.data.token);
-      navigate('/dashboard');
+      // Don't save token or redirect to dashboard - let user sign in first
+      console.log('Signup successful:', response.data);
+      navigate('/signin');
     } catch (error: any) {
       setError(error.response?.data?.message || 'Signup failed');
     }

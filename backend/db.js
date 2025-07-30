@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 function initDb() {
-  mongoose.connect('mongodb+srv://makgdoi:0FE9CFf7pM2peR3m@cluster0.caljbnk.mongodb.net/')
+  mongoose.connect('mongodb+srv://makgdoi:0FE9CFf7pM2peR3m@cluster0.caljbnk.mongodb.net/paytmClone')
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error('MongoDB connection error:', err));
 }

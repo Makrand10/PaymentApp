@@ -1,88 +1,136 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { User, Lock } from 'lucide-react';
 
-export function Signin() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+const SignIn: React.FC = () => {
+  const [formData, setFormData] = useState({
+    username: '',
+    password: ''
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:3000/api/v1/user/signin', {
-        username,
-        password
-      });
-      
-      localStorage.setItem('token', response.data.token);
-      navigate('/dashboard');
-    } catch (error: any) {
-      setError(error.response?.data?.message || 'Signin failed');
-    }
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = () => {
+    // To do: Implement login logic
+    console.log('Login attempted with:', formData);
   };
 
   return (
-    <div className="min-h-screen bg-gray-400 flex items-center justify-center px-4 py-8">
-      <div className="max-w-md w-full">
-        {/* Elevated Box Container */}
-        <div className="bg-white rounded-xl shadow-2xl p-8 transform transition-all duration-300 hover:scale-105 hover:shadow-3xl border border-gray-100">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Sign in to your account</h1>
-            <p className="text-gray-600">Enter your credentials to access your account.</p>
-          </div>
+    <div className="min-h-screen bg-[#110E23] flex flex-row">
+      {/* Left Pane */}
+      <div className="w-1/2 flex flex-col justify-center items-center lg:items-start p-8 lg:p-16 text-center lg:text-left">
+        <div className="max-w-md">
+          <h1 className="text-5xl font-bold text-white leading-tight mb-4">
+            Welcome to MakPay
+          </h1>
+          <p className="text-lg text-slate-300 font-light">
+            A single resolve for all your payments
+          </p>
+        </div>
+      </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {error && (
-              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
-                {error}
+      {/* Right Pane */}
+      <div className="w-1/2 flex items-center justify-center p-8">
+        <div className="w-full max-w-md">
+          <div className="bg-white rounded-2xl shadow-2xl p-10">
+            {/* Form Header */}
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-slate-900 mb-2">
+                MakPay
+              </h2>
+              <p className="text-slate-600 text-base">
+                Login to your account
+              </p>
+            </div>
+
+            {/* Login Form */}
+            <div className="space-y-6">
+              {/* Username Field */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2" htmlFor="username">
+                  Username
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <User className="h-5 w-5 text-slate-400" />
+                  </div>
+                  <input
+                    id="username"
+                    type="text"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    placeholder="Enter your username"
+                    className="block w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-base placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all duration-200"
+                    required
+                  />
+                </div>
               </div>
-            )}
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Username
-              </label>
-              <input
-                type="text"
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                placeholder="Enter your username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
+              {/* Password Field */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2" htmlFor="password">
+                  Password
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock className="h-5 w-5 text-slate-400" />
+                  </div>
+                  <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="Enter your password"
+                    className="block w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-lg text-base placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all duration-200"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Forgot Password Link */}
+              <div className="text-right">
+                <button
+                  type="button"
+                  className="text-sm text-cyan-500 hover:text-cyan-600 hover:underline transition-colors duration-200 bg-transparent border-none cursor-pointer p-0"
+                >
+                  Forgot Password?
+                </button>
+              </div>
+
+              {/* Login Button */}
+              <button
+                type="submit"
+                onClick={handleSubmit}
+                className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 px-4 rounded-lg text-base transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+              >
+                Login
+              </button>
+
+              {/* Sign Up Link */}
+              <div className="text-center pt-4">
+                <span className="text-sm text-slate-600">
+                  Don't have an account?{' '}
+                  <button
+                    type="button"
+                    className="text-cyan-500 hover:text-cyan-600 hover:underline transition-colors duration-200 font-medium bg-transparent border-none cursor-pointer p-0"
+                  >
+                    Sign up
+                  </button>
+                </span>
+              </div>
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <input
-                type="password"
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-medium transition-all duration-200 transform hover:scale-[1.02]"
-            >
-              Sign in
-            </button>
-          </form>
-
-          <div className="text-center mt-6">
-            <a href="/signup" className="text-blue-600 hover:text-blue-500 underline transition-colors duration-200">
-              Don't have an account? Sign up
-            </a>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default SignIn;
