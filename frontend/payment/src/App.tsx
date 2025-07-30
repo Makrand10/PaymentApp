@@ -5,7 +5,7 @@ import {
   Navigate
 } from "react-router-dom";
 
-import { Signup } from "./pages/Signup";
+import  Signup from "./pages/Signup";
 import  SignIn  from "./pages/Signin";
 import { Dashboard } from "./pages/Dashboard";
 import { SendMoney } from "./pages/SendMoney";
