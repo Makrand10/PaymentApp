@@ -152,7 +152,7 @@ const SignIn: React.FC = () => {
       
       // Navigate after 2 seconds
       setTimeout(() => {
-        navigate('/dashboard');
+      navigate('/dashboard');
         console.log('Navigating to dashboard...');
         // Reset navigating state after navigation
         setIsNavigating(false);
@@ -222,8 +222,11 @@ const SignIn: React.FC = () => {
       {/* Left Pane */}
       <div className="w-1/2 flex flex-col justify-center items-center lg:items-start p-8 lg:p-16 text-center lg:text-left">
         <div className="max-w-md">
-          <h1 className="text-5xl font-bold text-white leading-tight mb-4">
-            Welcome to MakPay
+          <h1 className="text-5xl font-bold text-white mb-4">
+            Welcome to
+          </h1>
+          <h1 className="text-5xl font-bold text-white mb-4">
+            Tu Bhar
           </h1>
           <p className="text-lg text-slate-300 font-light">
             A single resolve for all your payments
@@ -237,12 +240,12 @@ const SignIn: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-2xl p-10">
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold text-slate-900 mb-2">
-                  MakPay
+                  TU BHAR
                 </h2>
                 <p className="text-slate-600 text-base">
                   Login to your account
                 </p>
-              </div>
+          </div>
 
             {/* Error Message */}
             {error && (
@@ -254,17 +257,17 @@ const SignIn: React.FC = () => {
 
               <div className="space-y-6">
                 {/* Email Field */}
-                <div>
+            <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2" htmlFor="username">
                     Email Address
-                  </label>
+              </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <User className="h-5 w-5 text-slate-400" />
                     </div>
-                    <input
+              <input
                       id="username"
-                      type="email"
+                type="email"
                       name="username"
                       value={formData.username}
                       onChange={handleInputChange}
@@ -274,7 +277,7 @@ const SignIn: React.FC = () => {
                           ? 'border-red-300 focus:ring-red-500 focus:border-red-500' 
                           : 'border-slate-300 focus:ring-cyan-500 focus:border-cyan-500'
                       }`}
-                      required
+                required
                       disabled={isLoading}
                     />
                   </div>
@@ -284,18 +287,18 @@ const SignIn: React.FC = () => {
                       <span>{validationErrors.username}</span>
                     </p>
                   )}
-                </div>
+            </div>
 
                 {/* Password Field */}
-                <div>
+            <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2" htmlFor="password">
-                    Password
-                  </label>
+                Password
+              </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <Lock className="h-5 w-5 text-slate-400" />
                     </div>
-                    <input
+              <input
                       id="password"
                       type={showPassword ? "text" : "password"}
                       name="password"
@@ -307,7 +310,7 @@ const SignIn: React.FC = () => {
                           ? 'border-red-300 focus:ring-red-500 focus:border-red-500' 
                           : 'border-slate-300 focus:ring-cyan-500 focus:border-cyan-500'
                       }`}
-                      required
+                required
                       disabled={isLoading}
                     />
                     <button
@@ -341,10 +344,10 @@ const SignIn: React.FC = () => {
                   >
                     Forgot Password?
                   </button>
-                </div>
+            </div>
 
                 {/* Login Button - ENHANCED */}
-                <button
+            <button
                   type="button"
                   onClick={handleSubmit}
                   disabled={isButtonDisabled}
@@ -370,7 +373,7 @@ const SignIn: React.FC = () => {
                   ) : (
                     'Login'
                   )}
-                </button>
+            </button>
 
                 {/* Sign Up Link */}
                 <div className="text-center pt-4">

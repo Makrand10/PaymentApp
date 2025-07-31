@@ -4,6 +4,7 @@ const zod = require("zod");
 const { User, Account } = require("../db");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
+const { authMiddleware } = require("../middleware");
 
 // Signup validation
 const signupSchema = zod.object({
@@ -11,6 +12,37 @@ const signupSchema = zod.object({
   password: zod.string().min(6),
   firstName: zod.string().max(50),
   lastName: zod.string().max(50)
+});
+
+// 🔹 Bulk users endpoint
+router.get("/bulk", async (req, res) => {
+  try {
+    const filter = req.query.filter || "";
+    
+    console.log("Bulk request received with filter:", filter);
+    
+    const users = await User.find({
+      $or: [
+        { firstName: { $regex: filter, $options: "i" } },
+        { lastName: { $regex: filter, $options: "i" } },
+        { username: { $regex: filter, $options: "i" } }
+      ]
+    }).select('firstName lastName username _id');
+
+    console.log("Found users:", users.length);
+    
+    res.json({
+      users: users.map(user => ({
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.username
+      }))
+    });
+  } catch (error) {
+    console.error("Bulk users error:", error);
+    res.status(500).json({ message: "Internal server error", error: error.message });
+  }
 });
 
 // 🔹 Signup route
@@ -95,6 +127,24 @@ router.post("/signin", async (req, res) => {
     });
   } catch (error) {
     console.error("Signin error:", error);
+    res.status(500).json({ message: "Internal server error", error: error.message });
+  }
+});
+
+// 🔹 Get current user info
+router.get("/me", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select('firstName lastName username _id');
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json({
+      id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username
+    });
+  } catch (error) {
     res.status(500).json({ message: "Internal server error", error: error.message });
   }
 });
